@@ -1,32 +1,30 @@
 import React from "react";
 import "./App.css";
-import {
-  CircularProgress,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Button,
-  Typography,
-  Grid,
-} from "@material-ui/core";
+import logo from "./logo.svg";
+import Button from "@material-ui/core/Button";
+import { Paper, InputBase, Divider, IconButton } from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
+import TheatersIcon from "@material-ui/icons/Theaters";
+
+import { makeStyles } from "@material-ui/core/styles";
 
 const classes = (theme) => ({
   root: {
-    position: "relative",
+    padding: "2px 4px",
+    display: "flex",
+    alignItems: "center",
+    width: 400,
   },
-  bottom: {
-    color: theme.palette.grey[theme.palette.type === "light" ? 200 : 700],
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
   },
-  top: {
-    color: "#1a90ff",
-    animationDuration: "550ms",
-    position: "absolute",
-    left: 0,
+  iconButton: {
+    padding: 10,
   },
-  circle: {
-    strokeLinecap: "round",
+  divider: {
+    height: 28,
+    margin: 4,
   },
 });
 
@@ -36,116 +34,28 @@ class MoviePage extends React.Component {
     this.state = {
       dataReady: false,
       searchBarValue: "",
-      listOfMovies: [],
+      searchResult: [],
     };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
-  componentDidMount() {
-    console.log(window.location.href);
-    let currUrl = window.location.href;
-    let paramQ = currUrl.split("search?")[1];
-    // console.log(paramQ);
-    fetch("https://imdb8.p.rapidapi.com/title/find?q=" + paramQ, {
-      method: "GET",
-      headers: {
-        "x-rapidapi-host": "imdb8.p.rapidapi.com",
-        "x-rapidapi-key": "a5bbbde1eemsh008b1bc05139f67p1da3f8jsn404465dbd05a",
-      },
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        // console.log(response);
-        let movies = response.results;
-        // console.log(movies);
-        let tempFiltered = movies.filter(
-          (movie) => movie.titleType === "movie"
-        );
-        console.log(tempFiltered);
-        this.setState({ listOfMovies: tempFiltered });
-      })
-      .then((response) => {
-        this.setState({ dataReady: true });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  componentDidMount() {}
+  handleChange(event) {
+    console.log(event.target.value);
+    this.setState({ searchBarValue: event.target.value });
   }
-
+  handleKeyDown(event) {
+    if (event.key === "Enter") {
+      console.log("search");
+      window.location.href = "/search?" + this.state.searchBarValue;
+    }
+  }
   render() {
-    const { listOfMovies } = this.state;
     return (
       <div className="App">
         <header className="App-header">
-          {this.state.dataReady === false ? (
-            <div className={classes.root}>
-              <CircularProgress
-                variant="indeterminate"
-                disableShrink
-                className={classes.top}
-                classes={{
-                  circle: classes.circle,
-                }}
-                size={80}
-                thickness={4}
-              />
-            </div>
-          ) : (
-            <Grid item xs={12}>
-              <Grid container justify="center" spacing={2}>
-                {listOfMovies.map(
-                  ({ title, id, image, runningTimeInMinutes, principals }) => (
-                    <Grid item={true} xs={12} sm={4} key={id}>
-                      <Card className={classes.root}>
-                        <CardActionArea>
-                          <CardMedia
-                            className={classes.media}
-                            style={{ height: "525px" }}
-                            component="img"
-                            src={image.url}
-                            title="Contemplative Reptile"
-                          />
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="h2"
-                            >
-                              {title}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="textSecondary"
-                              component="p"
-                            >
-                              Starring: {principals[0].name} as{" "}
-                              {principals[0].characters.join("/")} and{" "}
-                              {principals[1].name} as{" "}
-                              {principals[1].characters.join("/")}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="textSecondary"
-                              component="p"
-                            >
-                              Runtime: {runningTimeInMinutes} minutes
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                        <CardActions>
-                          <Button size="small" color="primary">
-                            Learn More
-                          </Button>
-                          <Button size="small" color="primary">
-                            Share
-                          </Button>
-                        </CardActions>
-                      </Card>
-                    </Grid>
-                  )
-                )}
-              </Grid>
-            </Grid>
-          )}
+          <img src={logo} className="App-logo" alt="logo" />
         </header>
       </div>
     );
