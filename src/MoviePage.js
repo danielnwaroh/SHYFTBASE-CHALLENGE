@@ -54,7 +54,6 @@ class MoviePage extends React.Component {
     super(props);
     this.state = {
       dataReady: false,
-      searchBarValue: "",
       movieData: {},
     };
   }
@@ -63,9 +62,12 @@ class MoviePage extends React.Component {
     console.log(window.location.href);
     let currUrl = window.location.href;
     let paramQ = currUrl.split("movie?")[1];
-    fetch("http://www.omdbapi.com/?i=" + paramQ + "&apikey=bda8f98d", {
-      method: "GET",
-    })
+    fetch(
+      "http://www.omdbapi.com/?i=" + paramQ + "&plot=full&apikey=bda8f98d",
+      {
+        method: "GET",
+      }
+    )
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
@@ -106,9 +108,9 @@ class MoviePage extends React.Component {
                     component="img"
                     src={movieData.Poster}
                     title={movieData.Title}
-                    style={{ width: "25vh" }}
+                    style={{ width: "25%" }}
                   />
-                  <div className={classes.details}>
+                  <div className={classes.details} style={{ width: "75%" }}>
                     <CardContent className={classes.content}>
                       <Typography component="h5" variant="h5">
                         {movieData.Title}
@@ -116,26 +118,14 @@ class MoviePage extends React.Component {
                       <Typography variant="subtitle1" color="textSecondary">
                         {movieData.Year}
                       </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        {movieData.Plot} minutes
+                      </Typography>
                     </CardContent>
-                    <div className={classes.controls}>
-                      <IconButton aria-label="previous">
-                        {classes.direction === "rtl" ? (
-                          <SkipNextIcon />
-                        ) : (
-                          <SkipPreviousIcon />
-                        )}
-                      </IconButton>
-                      <IconButton aria-label="play/pause">
-                        <PlayArrowIcon className={classes.playIcon} />
-                      </IconButton>
-                      <IconButton aria-label="next">
-                        {classes.direction === "rtl" ? (
-                          <SkipPreviousIcon />
-                        ) : (
-                          <SkipNextIcon />
-                        )}
-                      </IconButton>
-                    </div>
                   </div>
                 </Grid>
               </Grid>
