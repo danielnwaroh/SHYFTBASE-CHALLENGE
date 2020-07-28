@@ -11,6 +11,7 @@ import {
   Typography,
   Grid,
 } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 const classes = (theme) => ({
   root: {
@@ -38,7 +39,6 @@ class MoviesDisplay extends React.Component {
       searchBarValue: "",
       listOfMovies: [],
     };
-    this.handleLearnMoreClick = this.handleLearnMoreClick.bind(this);
   }
 
   componentDidMount() {
@@ -69,8 +69,12 @@ class MoviesDisplay extends React.Component {
       });
   }
 
-  handleLearnMoreClick(id) {
+  getMovieID(id) {
     console.log(id);
+    let movieId = id.split("title/")[1];
+    movieId = movieId.replace("/", "");
+    console.log(movieId);
+    return movieId;
   }
 
   render() {
@@ -134,13 +138,15 @@ class MoviesDisplay extends React.Component {
                           </CardContent>
                         </CardActionArea>
                         <CardActions>
-                          <Button
-                            size="small"
-                            color="primary"
-                            onClick={() => this.handleLearnMoreClick(id)}
-                          >
-                            Learn More
+                          <Button size="small" color="primary">
+                            <Link
+                              to={`/movie?` + this.getMovieID(id)}
+                              className={"movieLink"}
+                            >
+                              Learn More
+                            </Link>
                           </Button>
+
                           <Button size="small" color="primary">
                             Share
                           </Button>

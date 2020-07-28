@@ -1,30 +1,51 @@
 import React from "react";
 import "./App.css";
 import logo from "./logo.svg";
-import Button from "@material-ui/core/Button";
-import { Paper, InputBase, Divider, IconButton } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
-import TheatersIcon from "@material-ui/icons/Theaters";
+
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  IconButton,
+  Typography,
+  Grid,
+  CircularProgress,
+  CardActionArea,
+  CardActions,
+  Button,
+} from "@material-ui/core";
+import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import SkipNextIcon from "@material-ui/icons/SkipNext";
 
 import { makeStyles } from "@material-ui/core/styles";
+import { Link } from "react-router-dom";
 
 const classes = (theme) => ({
   root: {
-    padding: "2px 4px",
+    display: "flex",
+    flexGrow: 1,
+  },
+
+  details: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  content: {
+    flex: "1 0 auto",
+  },
+  cover: {
+    width: 151,
+  },
+  controls: {
     display: "flex",
     alignItems: "center",
-    width: 400,
+    paddingLeft: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
   },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  },
-  divider: {
-    height: 28,
-    margin: 4,
+  playIcon: {
+    height: 38,
+    width: 38,
   },
 });
 
@@ -34,28 +55,92 @@ class MoviePage extends React.Component {
     this.state = {
       dataReady: false,
       searchBarValue: "",
-      searchResult: [],
+      movieData: {},
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
-  componentDidMount() {}
-  handleChange(event) {
-    console.log(event.target.value);
-    this.setState({ searchBarValue: event.target.value });
+  componentDidMount() {
+    console.log(window.location.href);
+    let currUrl = window.location.href;
+    let paramQ = currUrl.split("movie?")[1];
+    fetch("http://www.omdbapi.com/?i=" + paramQ + "&apikey=bda8f98d", {
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        this.setState({ movieData: response });
+      })
+      .then((response) => {
+        this.setState({ dataReady: true });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
-  handleKeyDown(event) {
-    if (event.key === "Enter") {
-      console.log("search");
-      window.location.href = "/search?" + this.state.searchBarValue;
-    }
-  }
+
   render() {
+    const { movieData } = this.state;
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          {this.state.dataReady === false ? (
+            <div className={classes.root}>
+              <CircularProgress
+                variant="indeterminate"
+                disableShrink
+                className={classes.top}
+                classes={{
+                  circle: classes.circle,
+                }}
+                size={80}
+                thickness={4}
+              />
+            </div>
+          ) : (
+            <Card className={classes.root} style={{ width: "100%" }}>
+              <Grid item xs={12}>
+                <Grid container justify="center" spacing={2}>
+                  <CardMedia
+                    className={classes.cover}
+                    component="img"
+                    src={movieData.Poster}
+                    title={movieData.Title}
+                    style={{ width: "25vh" }}
+                  />
+                  <div className={classes.details}>
+                    <CardContent className={classes.content}>
+                      <Typography component="h5" variant="h5">
+                        {movieData.Title}
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        {movieData.Year}
+                      </Typography>
+                    </CardContent>
+                    <div className={classes.controls}>
+                      <IconButton aria-label="previous">
+                        {classes.direction === "rtl" ? (
+                          <SkipNextIcon />
+                        ) : (
+                          <SkipPreviousIcon />
+                        )}
+                      </IconButton>
+                      <IconButton aria-label="play/pause">
+                        <PlayArrowIcon className={classes.playIcon} />
+                      </IconButton>
+                      <IconButton aria-label="next">
+                        {classes.direction === "rtl" ? (
+                          <SkipPreviousIcon />
+                        ) : (
+                          <SkipNextIcon />
+                        )}
+                      </IconButton>
+                    </div>
+                  </div>
+                </Grid>
+              </Grid>
+            </Card>
+          )}
         </header>
       </div>
     );
