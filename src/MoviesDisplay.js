@@ -77,10 +77,8 @@ class MoviesDisplay extends React.Component {
   }
 
   getMovieID(id) {
-    console.log(id);
     let movieId = id.split("title/")[1];
     movieId = movieId.replace("/", "");
-    console.log(movieId);
     return movieId;
   }
 
@@ -145,9 +143,7 @@ class MoviesDisplay extends React.Component {
                                 component="p"
                               >
                                 Starring: {principals[0].name} as{" "}
-                                {principals[0].characters.join("/")} and{" "}
-                                {principals[1].name} as{" "}
-                                {principals[1].characters.join("/")}
+                                {principals[0].characters.join("/")}
                               </Typography>
                               <Typography
                                 variant="body2"
