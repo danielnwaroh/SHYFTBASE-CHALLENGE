@@ -10,8 +10,10 @@ import {
   Button,
   Typography,
   Grid,
+  Fab,
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import HomeIcon from "@material-ui/icons/Home";
 
 const classes = (theme) => ({
   root: {
@@ -28,6 +30,11 @@ const classes = (theme) => ({
   },
   circle: {
     strokeLinecap: "round",
+  },
+  fab: {
+    position: "absolute",
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
 });
 
@@ -96,67 +103,82 @@ class MoviesDisplay extends React.Component {
               />
             </div>
           ) : (
-            <Grid item xs={12}>
-              <Grid container justify="center" spacing={2}>
-                {listOfMovies.map(
-                  ({ title, id, image, runningTimeInMinutes, principals }) => (
-                    <Grid item={true} xs={12} sm={4} key={id}>
-                      <Card className={classes.root}>
-                        <CardActionArea>
-                          <CardMedia
-                            className={classes.media}
-                            style={{ height: "525px" }}
-                            component="img"
-                            src={image.url}
-                            title="Contemplative Reptile"
-                          />
-                          <CardContent>
-                            <Typography
-                              gutterBottom
-                              variant="h5"
-                              component="h2"
-                            >
-                              {title}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="textSecondary"
-                              component="p"
-                            >
-                              Starring: {principals[0].name} as{" "}
-                              {principals[0].characters.join("/")} and{" "}
-                              {principals[1].name} as{" "}
-                              {principals[1].characters.join("/")}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              color="textSecondary"
-                              component="p"
-                            >
-                              Runtime: {runningTimeInMinutes} minutes
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                        <CardActions>
-                          <Button size="small" color="primary">
-                            <Link
-                              to={`/movie?` + this.getMovieID(id)}
-                              className={"movieLink"}
-                            >
-                              Learn More
-                            </Link>
-                          </Button>
+            <div>
+              <div style={{ float: "left" }}>
+                <Fab color="primary" aria-label="Home" className={classes.fab}>
+                  <Link to={"/"} className={"movieLink"}>
+                    <HomeIcon />
+                  </Link>
+                </Fab>
+              </div>
+              <Grid item xs={12}>
+                <Grid container justify="center" spacing={2}>
+                  {listOfMovies.map(
+                    ({
+                      title,
+                      id,
+                      image,
+                      runningTimeInMinutes,
+                      principals,
+                    }) => (
+                      <Grid item={true} xs={12} sm={4} key={id}>
+                        <Card className={classes.root}>
+                          <CardActionArea>
+                            <CardMedia
+                              className={classes.media}
+                              style={{ height: "525px", cursor: "default" }}
+                              component="img"
+                              src={image.url}
+                              title="Contemplative Reptile"
+                            />
+                            <CardContent style={{ cursor: "default" }}>
+                              <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="h2"
+                              >
+                                {title}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="p"
+                              >
+                                Starring: {principals[0].name} as{" "}
+                                {principals[0].characters.join("/")} and{" "}
+                                {principals[1].name} as{" "}
+                                {principals[1].characters.join("/")}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="p"
+                              >
+                                Runtime: {runningTimeInMinutes} minutes
+                              </Typography>
+                            </CardContent>
+                          </CardActionArea>
+                          <CardActions>
+                            <Button size="small" color="primary">
+                              <Link
+                                to={`/movie?` + this.getMovieID(id)}
+                                className={"movieLink"}
+                              >
+                                Learn More
+                              </Link>
+                            </Button>
 
-                          <Button size="small" color="primary">
-                            Share
-                          </Button>
-                        </CardActions>
-                      </Card>
-                    </Grid>
-                  )
-                )}
+                            <Button size="small" color="primary">
+                              Share
+                            </Button>
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                    )
+                  )}
+                </Grid>
               </Grid>
-            </Grid>
+            </div>
           )}
         </header>
       </div>

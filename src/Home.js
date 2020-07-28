@@ -1,11 +1,14 @@
 import React from "react";
 import "./App.css";
-import Button from "@material-ui/core/Button";
-import { Paper, InputBase, Divider, IconButton } from "@material-ui/core";
+import {
+  Paper,
+  InputBase,
+  Divider,
+  IconButton,
+  Typography,
+} from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import TheatersIcon from "@material-ui/icons/Theaters";
-
-import { makeStyles } from "@material-ui/core/styles";
 
 const classes = (theme) => ({
   root: {
@@ -41,7 +44,6 @@ class Home extends React.Component {
 
   componentDidMount() {}
   handleChange(event) {
-    console.log(event.target.value);
     this.setState({ searchBarValue: event.target.value });
   }
   handleKeyDown(event) {
@@ -54,8 +56,12 @@ class Home extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          {/*<img src={logo} className="App-logo" alt="logo" />*/}
-
+          <Typography variant="h1" component="h2" gutterBottom>
+            Browse Movies
+          </Typography>
+          <Typography variant="caption" display="block" gutterBottom>
+            Start by entering a movie into the search bar, then hitting enter
+          </Typography>
           <Paper component="div" className={classes.root}>
             <IconButton className={classes.iconButton} aria-label="theatre">
               <TheatersIcon />
