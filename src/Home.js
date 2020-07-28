@@ -48,20 +48,6 @@ class Home extends React.Component {
     if (event.key === "Enter") {
       console.log("search");
       window.location.href = "/search?" + this.state.searchBarValue;
-      // fetch("https://imdb8.p.rapidapi.com/title/find?q=avengers", {
-      //   method: "GET",
-      //   headers: {
-      //     "x-rapidapi-host": "imdb8.p.rapidapi.com",
-      //     "x-rapidapi-key":
-      //       "a5bbbde1eemsh008b1bc05139f67p1da3f8jsn404465dbd05a",
-      //   },
-      // })
-      //   .then((response) => {
-      //     console.log(response);
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
     }
   }
   render() {
@@ -76,8 +62,8 @@ class Home extends React.Component {
             </IconButton>
             <InputBase
               className={classes.input}
-              placeholder="Search Google Maps"
-              inputProps={{ "aria-label": "search google maps" }}
+              placeholder="Search A Movie"
+              inputProps={{ "aria-label": "search a movie" }}
               value={this.state.searchBarValue}
               onChange={this.handleChange}
               onKeyDown={this.handleKeyDown}

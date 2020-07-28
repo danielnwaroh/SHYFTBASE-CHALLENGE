@@ -13,13 +13,9 @@ import {
   CardActionArea,
   CardActions,
   Button,
+  Divider,
+  Box,
 } from "@material-ui/core";
-import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import SkipNextIcon from "@material-ui/icons/SkipNext";
-
-import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
 
 const classes = (theme) => ({
   root: {
@@ -116,15 +112,121 @@ class MoviePage extends React.Component {
                         {movieData.Title}
                       </Typography>
                       <Typography variant="subtitle1" color="textSecondary">
-                        {movieData.Year}
+                        Rating: {movieData.Rated}
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Runtime: {movieData.Runtime}
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        {movieData.Genre}
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        {movieData.Released}
                       </Typography>
                       <Typography
                         variant="body2"
-                        color="textSecondary"
+                        color="textPrimary"
                         component="p"
                       >
-                        {movieData.Plot} minutes
+                        {movieData.Plot}
                       </Typography>
+                      <Divider />
+                      <Typography
+                        variant="body2"
+                        color="textPrimary"
+                        component="p"
+                      >
+                        Director: {movieData.Director}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textPrimary"
+                        component="p"
+                      >
+                        Writers: {movieData.Writer}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textPrimary"
+                        component="p"
+                      >
+                        Starring: {movieData.Actors}
+                      </Typography>
+                      <br />
+                      <Typography
+                        variant="body2"
+                        color="textPrimary"
+                        component="p"
+                      >
+                        Box Office: {movieData.BoxOffice}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textPrimary"
+                        component="p"
+                      >
+                        Awards: {movieData.Awards}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="textPrimary"
+                        component="p"
+                      >
+                        Metascore:
+                      </Typography>
+                      <Box position="relative" display="inline-flex">
+                        <CircularProgress
+                          variant="static"
+                          value={movieData.Metascore}
+                        />
+                        <Box
+                          top={0}
+                          left={0}
+                          bottom={0}
+                          right={0}
+                          position="absolute"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          <Typography
+                            variant="caption"
+                            component="div"
+                            color="textSecondary"
+                          >{`${Math.round(movieData.Metascore)}%`}</Typography>
+                        </Box>
+                      </Box>
+                      <Typography
+                        variant="body2"
+                        color="textPrimary"
+                        component="p"
+                      >
+                        IMDb Rating:
+                      </Typography>
+                      <Box position="relative" display="inline-flex">
+                        <CircularProgress
+                          variant="static"
+                          value={movieData.imdbRating * 10}
+                        />
+                        <Box
+                          top={0}
+                          left={0}
+                          bottom={0}
+                          right={0}
+                          position="absolute"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          <Typography
+                            variant="caption"
+                            component="div"
+                            color="textSecondary"
+                          >{`${Math.round(
+                            movieData.imdbRating * 10
+                          )}%`}</Typography>
+                        </Box>
+                      </Box>
                     </CardContent>
                   </div>
                 </Grid>
